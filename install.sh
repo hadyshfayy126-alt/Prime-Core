@@ -21,5 +21,8 @@ cp -r ./* /usr/local/prime-core/
 cd /usr/local/prime-core
 
 chmod +x x-ui.sh
+chmod +x x-ui
+cp x-ui /usr/local/prime-core/x-ui
+chmod +x /usr/local/prime-core/x-ui
 
 bash x-ui.sh install
