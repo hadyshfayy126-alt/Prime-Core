@@ -129,8 +129,8 @@ before_show_menu() {
 }
 
 install() {
-    chmod +x /usr/local/prime-core/x-ui.sh
-    /usr/local/prime-core/x-ui.sh install
+chmod +x /usr/local/prime-core/x-ui
+/usr/local/prime-core/x-ui install
     if [[ $? == 0 ]]; then
         if [[ $# == 0 ]]; then
             start
