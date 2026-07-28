@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "clients": {
+    "hmstat_3_3af6ypxqi3uvukk7": {
+      "uploadMbps": 1000000,
+      "downloadMbps": 1000000
+    }
+  }
+}

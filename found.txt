@@ -1,0 +1,418 @@
+./y-ui.sh:11:### HEIMDALL UI HELPERS ###
+./y-ui.sh:73:### END HEIMDALL UI HELPERS ###
+./y-ui.sh:114:        xui_env_file="/etc/default/x-ui"
+./y-ui.sh:117:        xui_env_file="/etc/conf.d/x-ui"
+./y-ui.sh:120:        xui_env_file="/etc/sysconfig/x-ui"
+./y-ui.sh:256:    install -d -m 755 /etc/systemd/system/x-ui.service.d
+./y-ui.sh:258:    cat > /etc/systemd/system/x-ui.service.d/10-y-ui-env.conf <<ENVEOF
+./y-ui.sh:268:        if rc-service x-ui restart; then
+./y-ui.sh:269:            info "x-ui restarted successfully."
+./y-ui.sh:273:        error "Failed to restart x-ui."
+./y-ui.sh:280:        if systemctl restart x-ui; then
+./y-ui.sh:281:            info "x-ui restarted successfully."
+./y-ui.sh:285:        error "Failed to restart x-ui."
+./y-ui.sh:287:        journalctl -u x-ui -n 30 --no-pager
+./x-ui.rc:3:command="/usr/local/x-ui/x-ui"
+./x-ui.rc:5:pidfile="/run/x-ui.pid"
+./x-ui.rc:6:description="x-ui Service"
+./x-ui.rc:7:procname="x-ui"
+./x-ui.rc:12:    cd /usr/local/x-ui
+./x-ui.sh:93:    xui_folder="${XUI_MAIN_FOLDER:=/usr/local/x-ui}"
+./x-ui.sh:96:log_folder="${XUI_LOG_FOLDER:=/var/log/x-ui}"
+./x-ui.sh:132:    bash <(curl -Ls https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/install.sh)
+./x-ui.sh:143:    confirm "This function will update all x-ui components to the latest version, and the data will not be lost. Do you want to continue?" "y"
+./x-ui.sh:151:    bash <(curl -Ls https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/update.sh)
+./x-ui.sh:159:    confirm "This will update Heimdall to the latest DEV commit (the rolling 'dev-latest' build, not a stable release). Your data is preserved. Continue?" "y"
+./x-ui.sh:169:    XUI_UPDATE_TAG="dev-latest" bash <(curl -Ls https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/update.sh)
+./x-ui.sh:187:    curl -fLRo /usr/bin/x-ui https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/x-ui.sh
+./x-ui.sh:188:    chmod +x ${xui_folder}/x-ui.sh
+./x-ui.sh:189:    chmod +x /usr/bin/x-ui
+./x-ui.sh:201:    LOGE "Legacy version installation is disabled in Heimdall to prevent upstream overwrite."
+./x-ui.sh:202:    LOGI "Use the official Heimdall update path instead."
+./x-ui.sh:218:            echo "/etc/default/x-ui"
+./x-ui.sh:221:            echo "/etc/conf.d/x-ui"
+./x-ui.sh:224:            echo "/etc/sysconfig/x-ui"
+./x-ui.sh:239:        rc-service x-ui stop
+./x-ui.sh:240:        rc-update del x-ui
+./x-ui.sh:241:        rm /etc/init.d/x-ui -f
+./x-ui.sh:243:        systemctl stop x-ui
+./x-ui.sh:244:        systemctl disable x-ui
+./x-ui.sh:245:        rm ${xui_service}/x-ui.service -f
+./x-ui.sh:257:    rm /etc/x-ui/ -rf
+./x-ui.sh:268:    echo -e "${green}bash <(curl -Ls https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/install.sh)${plain}"
+./x-ui.sh:291:        ${xui_folder}/x-ui setting -username "${config_account}" -password "${config_password}" > /dev/null 2>&1
+./x-ui.sh:293:        ${xui_folder}/x-ui setting -username "${config_account}" -password "${config_password}" -resetTwoFactor=true > /dev/null 2>&1
+./x-ui.sh:299:    echo -e "${green} Please use the new login username and password to access the X-UI panel. Also remember them! ${plain}"
+./x-ui.sh:322:    ${xui_folder}/x-ui setting -webBasePath "${config_webBasePath}" > /dev/null 2>&1
+./x-ui.sh:337:    ${xui_folder}/x-ui setting -reset
+./x-ui.sh:343:    local info=$(${xui_folder}/x-ui setting -show true)
+./x-ui.sh:360:        echo -e "${green}Database: SQLite (/etc/x-ui/x-ui.db)${plain}"
+./x-ui.sh:365:    local existing_cert=$(${xui_folder}/x-ui setting -getCert true | grep 'cert:' | awk -F': ' '{print $2}' | tr -d '[:space:]')
+./x-ui.sh:449:        ${xui_folder}/x-ui setting -port ${port}
+./x-ui.sh:471:            rc-service x-ui start
+./x-ui.sh:473:            systemctl start x-ui
+./x-ui.sh:478:            LOGI "x-ui Started Successfully"
+./x-ui.sh:505:            rc-service x-ui stop
+./x-ui.sh:507:            systemctl stop x-ui
+./x-ui.sh:512:            LOGI "x-ui and xray stopped successfully"
+./x-ui.sh:535:            LOGI "x-ui and xray Restarted successfully"
+./x-ui.sh:545:        rc-service x-ui restart
+./x-ui.sh:547:        systemctl restart x-ui
+./x-ui.sh:552:        LOGI "x-ui and xray Restarted successfully"
+./x-ui.sh:576:        rc-service x-ui reload
+./x-ui.sh:578:        systemctl reload x-ui
+./x-ui.sh:597:        rc-service x-ui status
+./x-ui.sh:599:        systemctl status x-ui -l
+./x-ui.sh:616:        rc-update add x-ui default
+./x-ui.sh:618:        systemctl enable x-ui
+./x-ui.sh:621:        LOGI "x-ui Set to boot automatically on startup successfully"
+./x-ui.sh:623:        LOGE "x-ui Failed to set Autostart"
+./x-ui.sh:641:        rc-update del x-ui
+./x-ui.sh:643:        systemctl disable x-ui
+./x-ui.sh:646:        LOGI "x-ui Autostart Cancelled successfully"
+./x-ui.sh:648:        LOGE "x-ui Failed to cancel autostart"
+./x-ui.sh:667:                grep -F 'x-ui[' /var/log/messages
+./x-ui.sh:688:                journalctl -u x-ui -e --no-pager -f -p debug
+./x-ui.sh:738:    if [ -f "/etc/sysctl.d/99-bbr-x-ui.conf" ]; then
+./x-ui.sh:739:        old_settings=$(head -1 /etc/sysctl.d/99-bbr-x-ui.conf | tr -d '#')
+./x-ui.sh:745:        rm /etc/sysctl.d/99-bbr-x-ui.conf
+./x-ui.sh:774:        } > "/etc/sysctl.d/99-bbr-x-ui.conf"
+./x-ui.sh:783:        sysctl -p /etc/sysctl.d/99-bbr-x-ui.conf
+./x-ui.sh:801:    curl -fLRo /usr/bin/x-ui -z /usr/bin/x-ui https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/x-ui.sh
+./x-ui.sh:807:        chmod +x /usr/bin/x-ui
+./x-ui.sh:814:    ps -ef 2> /dev/null | grep -F "${xui_folder}/x-ui" | grep -v grep | awk 'NR==1 {print $1}'
+./x-ui.sh:829:        if [[ ! -x "${xui_folder}/x-ui" ]]; then
+./x-ui.sh:839:        if [[ ! -f /etc/init.d/x-ui ]]; then
+./x-ui.sh:842:        if [[ $(rc-service x-ui status | grep -F 'status: started' -c) == 1 ]]; then
+./x-ui.sh:848:        if [[ ! -f ${xui_service}/x-ui.service ]]; then
+./x-ui.sh:851:        temp=$(systemctl status x-ui | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
+./x-ui.sh:862:        if [[ $(rc-update show | grep -F 'x-ui' | grep default -c) == 1 ]]; then
+./x-ui.sh:868:        temp=$(systemctl is-enabled x-ui)
+./x-ui.sh:1332:                    local existing_cert=$(${xui_folder}/x-ui setting -getCert true | grep 'cert:' | awk -F': ' '{print $2}' | tr -d '[:space:]')
+./x-ui.sh:1334:                        ${xui_folder}/x-ui cert -reset
+./x-ui.sh:1381:            local panel_cert=$(${xui_folder}/x-ui setting -getCert true | grep 'cert:' | awk -F': ' '{print $2}' | tr -d '[:space:]')
+./x-ui.sh:1400:                    ${xui_folder}/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
+./x-ui.sh:1424:                        ${xui_folder}/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
+./x-ui.sh:1435:                                --reloadcmd "x-ui restart" 2>&1 || true
+./x-ui.sh:1471:    local existing_webBasePath=$(${xui_folder}/x-ui setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}')
+./x-ui.sh:1472:    local existing_port=$(${xui_folder}/x-ui setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
+./x-ui.sh:1600:    local reloadCmd="systemctl restart x-ui 2>/dev/null || rc-service x-ui restart 2>/dev/null"
+./x-ui.sh:1657:            ${xui_folder}/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
+./x-ui.sh:1677:    local existing_webBasePath=$(${xui_folder}/x-ui setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}')
+./x-ui.sh:1678:    local existing_port=$(${xui_folder}/x-ui setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
+./x-ui.sh:1805:    reloadCmd="x-ui restart"
+./x-ui.sh:1807:    LOGI "Default --reloadcmd for ACME is: ${yellow}x-ui restart"
+./x-ui.sh:1811:        echo -e "\n${green}\t1.${plain} Preset: systemctl reload nginx ; x-ui restart"
+./x-ui.sh:1817:                LOGI "Reloadcmd is: systemctl reload nginx ; x-ui restart"
+./x-ui.sh:1818:                reloadCmd="systemctl reload nginx ; x-ui restart"
+./x-ui.sh:1821:                LOGD "It's recommended to put x-ui restart at the end, so it won't raise an error if other services fails"
+./x-ui.sh:1822:                read -rp "Please enter your reloadcmd (example: systemctl reload nginx ; x-ui restart): " reloadCmd
+./x-ui.sh:1876:            ${xui_folder}/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
+./x-ui.sh:1891:    local existing_webBasePath=$(${xui_folder}/x-ui setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}')
+./x-ui.sh:1892:    local existing_port=$(${xui_folder}/x-ui setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
+./x-ui.sh:1970:        reloadCmd="x-ui restart"
+./x-ui.sh:1972:        LOGI "Default --reloadcmd for ACME is: ${yellow}x-ui restart"
+./x-ui.sh:1976:            echo -e "\n${green}\t1.${plain} Preset: systemctl reload nginx ; x-ui restart"
+./x-ui.sh:1982:                    LOGI "Reloadcmd is: systemctl reload nginx ; x-ui restart"
+./x-ui.sh:1983:                    reloadCmd="systemctl reload nginx ; x-ui restart"
+./x-ui.sh:1986:                    LOGD "It's recommended to put x-ui restart at the end, so it won't raise an error if other services fails"
+./x-ui.sh:1987:                    read -rp "Please enter your reloadcmd (example: systemctl reload nginx ; x-ui restart): " reloadCmd
+./x-ui.sh:2025:                ${xui_folder}/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
+./x-ui.sh:2120:    local existing_webBasePath=$(${xui_folder}/x-ui setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}')
+./x-ui.sh:2121:    local existing_port=$(${xui_folder}/x-ui setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
+./x-ui.sh:2122:    local existing_listenIP=$(${xui_folder}/x-ui setting -getListen true | grep -Eo 'listenIP: .+' | awk '{print $2}')
+./x-ui.sh:2123:    local existing_cert=$(${xui_folder}/x-ui setting -getCert true | grep -Eo 'cert: .+' | awk '{print $2}')
+./x-ui.sh:2124:    local existing_key=$(${xui_folder}/x-ui setting -getCert true | grep -Eo 'key: .+' | awk '{print $2}')
+./x-ui.sh:2165:                ${xui_folder}/x-ui setting -listenIP "${config_listenIP}" > /dev/null 2>&1
+./x-ui.sh:2181:            ${xui_folder}/x-ui setting -listenIP 0.0.0.0 > /dev/null 2>&1
+./x-ui.sh:2535:    if [[ ! -x "${xui_folder}/x-ui" ]]; then
+./x-ui.sh:2536:        LOGE "x-ui is not installed."
+./x-ui.sh:2581:    if ! ${xui_folder}/x-ui migrate-db --dsn "$dsn"; then
+./x-ui.sh:2659:# file using the bundled x-ui binary. With no arguments it dumps the installed
+./x-ui.sh:2661:#   x-ui migrateDB [file.db|file.dump] [output]
+./x-ui.sh:2664:    local default_db="/etc/x-ui/x-ui.db"
+./x-ui.sh:2665:    local bin="${xui_folder}/x-ui"
+./x-ui.sh:2670:        LOGE "x-ui binary not found at ${bin}. Is the panel installed?"
+./x-ui.sh:2675:        LOGE "This x-ui build does not support .db <-> .dump conversion yet."
+./x-ui.sh:2676:        LOGE "Update the panel first (x-ui update) to a version with 'migrate-db --dump/--restore'."
+./x-ui.sh:2682:        echo -e "Usage: ${green}x-ui migrateDB [file.db|file.dump] [output]${plain}"
+./x-ui.sh:2719:            LOGE "Refusing to restore into the live database (${default_db}) while x-ui is running."
+./x-ui.sh:2720:            LOGE "Stop the panel first (x-ui stop) or choose a different output path."
+./x-ui.sh:2742:    local default_db="/etc/x-ui/x-ui.db"
+./x-ui.sh:2753:│  ${blue}x-ui control menu usages (subcommands):${plain}                       │
+./x-ui.sh:2755:│  ${blue}x-ui${plain}                       - Admin Management Script          │
+./x-ui.sh:2756:│  ${blue}x-ui start${plain}                 - Start                            │
+./x-ui.sh:2757:│  ${blue}x-ui stop${plain}                  - Stop                             │
+./x-ui.sh:2758:│  ${blue}x-ui restart${plain}               - Restart                          │
+./x-ui.sh:2759:|  ${blue}x-ui restart-xray${plain}          - Restart Xray                     │
+./x-ui.sh:2760:│  ${blue}x-ui status${plain}                - Current Status                   │
+./x-ui.sh:2761:│  ${blue}x-ui settings${plain}              - Current Settings                 │
+./x-ui.sh:2762:│  ${blue}x-ui enable${plain}                - Enable Autostart on OS Startup   │
+./x-ui.sh:2763:│  ${blue}x-ui disable${plain}               - Disable Autostart on OS Startup  │
+./x-ui.sh:2764:│  ${blue}x-ui log${plain}                   - Check logs                       │
+./x-ui.sh:2765:│  ${blue}x-ui update${plain}                - Update                           │
+./x-ui.sh:2766:│  ${blue}x-ui update-dev${plain}            - Update to Dev channel (latest)   │
+./x-ui.sh:2767:│  ${blue}x-ui update-all-geofiles${plain}   - Update all geo files             │
+./x-ui.sh:2768:│  ${blue}x-ui migrateDB [file]${plain}      - Convert .db <-> .dump (SQLite)   │
+./x-ui.sh:2769:│  ${blue}x-ui legacy${plain}                - Legacy version disabled disabled                   │
+./x-ui.sh:2770:│  ${blue}x-ui install${plain}               - Install                          │
+./x-ui.sh:2771:│  ${blue}x-ui uninstall${plain}             - Uninstall                        │
+./x-ui.sh:2778:│  ${green}Heimdall Panel Management Script${plain}             │
+./x-ui.service.arch:2:Description=x-ui Service
+./x-ui.service.arch:7:EnvironmentFile=-/etc/conf.d/x-ui
+./x-ui.service.arch:10:WorkingDirectory=/usr/local/x-ui/
+./x-ui.service.arch:11:ExecStart=/usr/local/x-ui/x-ui
+./y-ui-migration-center.py:21:# === HEIMDALL UI HELPERS ===
+./y-ui-migration-center.py:57:# === END HEIMDALL UI HELPERS ===
+./y-ui-migration-center.py:60:HEIMDALL_DB = os.environ.get("HEIMDALL_DB", "xui")
+./y-ui-migration-center.py:112:def run_heimdall_psql(sql):
+./y-ui-migration-center.py:113:    cmd = ["sudo", "-u", PSQL_USER, "psql", "-d", HEIMDALL_DB, "-v", "ON_ERROR_STOP=1", "-Atc", sql]
+./y-ui-migration-center.py:117:def run_heimdall_psql_script(sql):
+./y-ui-migration-center.py:118:    cmd = ["sudo", "-u", PSQL_USER, "psql", "-d", HEIMDALL_DB, "-v", "ON_ERROR_STOP=1"]
+./y-ui-migration-center.py:793:        # client name is user.name, so map user.name -> Heimdall email/name.
+./y-ui-migration-center.py:882:def validate_heimdall_tables():
+./y-ui-migration-center.py:884:    out = run_heimdall_psql("""
+./y-ui-migration-center.py:894:        die(f"missing Heimdall tables: {missing}")
+./y-ui-migration-center.py:896:def fetch_heimdall_inbounds():
+./y-ui-migration-center.py:897:    out = run_heimdall_psql("""
+./y-ui-migration-center.py:927:    all_rows = fetch_heimdall_inbounds()
+./y-ui-migration-center.py:931:        die(f"target inbound ids not found in Heimdall: {missing}")
+./y-ui-migration-center.py:1032:            warnings.append(f"{r.get('_source_label') or 'Source'} data_limit_reset_strategy={r.get('data_limit_reset_strategy')} not mapped; Heimdall reset=0")
+./y-ui-migration-center.py:1087:            "heimdall": {
+./y-ui-migration-center.py:1108:                "owner_policy": "owner_admin_id=NULL then x-ui restart/fallback assigns Owner",
+./y-ui-migration-center.py:1134:    out = run_heimdall_psql(sql).strip()
+./y-ui-migration-center.py:1273:def backup_heimdall_db():
+./y-ui-migration-center.py:1275:    bkdir = Path(f"/root/heimdall-backup-before-yui-migration-{ts}")
+./y-ui-migration-center.py:1280:        res = subprocess.run(["sudo", "-u", PSQL_USER, "pg_dump", "-Fc", "-d", HEIMDALL_DB], stdout=f, stderr=subprocess.PIPE, cwd="/tmp")
+./y-ui-migration-center.py:1291:    run_cmd(["systemctl", "restart", "x-ui"])
+./y-ui-migration-center.py:1293:    out, _ = run_cmd(["systemctl", "is-active", "x-ui"])
+./y-ui-migration-center.py:1295:        die("x-ui did not become active after restart")
+./y-ui-migration-center.py:1316:    return run_heimdall_psql(sql)
+./y-ui-migration-center.py:1319:    rows = fetch_heimdall_inbounds()
+./y-ui-migration-center.py:1321:    print("Heimdall existing inbounds:")
+./y-ui-migration-center.py:1539:    print("HEIMDALL")
+./y-ui-migration-center.py:1542:    inbounds = fetch_heimdall_inbounds()
+./y-ui-migration-center.py:1564:    print("└─ Heimdall inbound selection")
+./y-ui-migration-center.py:1594:    raw_inbounds = prompt("", "Target Heimdall inbound IDs")
+./y-ui-migration-center.py:1624:    print("REASON: duplicate clients already exist in Heimdall")
+./y-ui-migration-center.py:1715:        validate_heimdall_tables()
+./y-ui-migration-center.py:1791:            confirm = input("Type YES to backup Heimdall DB and run real import: ").strip()
+./y-ui-migration-center.py:1799:        bkdir = backup_heimdall_db()
+./y-ui-migration-center.py:1804:        stdout, stderr = run_heimdall_psql_script(sql_text)
+./x-ui.service.debian:2:Description=x-ui Service
+./x-ui.service.debian:7:EnvironmentFile=-/etc/default/x-ui
+./x-ui.service.debian:10:WorkingDirectory=/usr/local/x-ui/
+./x-ui.service.debian:11:ExecStart=/usr/local/x-ui/x-ui
+./x-ui.service.rhel:2:Description=x-ui Service
+./x-ui.service.rhel:7:EnvironmentFile=-/etc/sysconfig/x-ui
+./x-ui.service.rhel:10:WorkingDirectory=/usr/local/x-ui/
+./x-ui.service.rhel:11:ExecStart=/usr/local/x-ui/x-ui
+./backup-text/x-ui.sh:93:    xui_folder="${XUI_MAIN_FOLDER:=/usr/local/x-ui}"
+./backup-text/x-ui.sh:96:log_folder="${XUI_LOG_FOLDER:=/var/log/x-ui}"
+./backup-text/x-ui.sh:132:    bash <(curl -Ls https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/install.sh)
+./backup-text/x-ui.sh:143:    confirm "This function will update all x-ui components to the latest version, and the data will not be lost. Do you want to continue?" "y"
+./backup-text/x-ui.sh:151:    bash <(curl -Ls https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/update.sh)
+./backup-text/x-ui.sh:159:    confirm "This will update Heimdall to the latest DEV commit (the rolling 'dev-latest' build, not a stable release). Your data is preserved. Continue?" "y"
+./backup-text/x-ui.sh:169:    XUI_UPDATE_TAG="dev-latest" bash <(curl -Ls https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/update.sh)
+./backup-text/x-ui.sh:187:    curl -fLRo /usr/bin/x-ui https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/x-ui.sh
+./backup-text/x-ui.sh:188:    chmod +x ${xui_folder}/x-ui.sh
+./backup-text/x-ui.sh:189:    chmod +x /usr/bin/x-ui
+./backup-text/x-ui.sh:201:    LOGE "Legacy version installation is disabled in Heimdall to prevent upstream overwrite."
+./backup-text/x-ui.sh:202:    LOGI "Use the official Heimdall update path instead."
+./backup-text/x-ui.sh:218:            echo "/etc/default/x-ui"
+./backup-text/x-ui.sh:221:            echo "/etc/conf.d/x-ui"
+./backup-text/x-ui.sh:224:            echo "/etc/sysconfig/x-ui"
+./backup-text/x-ui.sh:239:        rc-service x-ui stop
+./backup-text/x-ui.sh:240:        rc-update del x-ui
+./backup-text/x-ui.sh:241:        rm /etc/init.d/x-ui -f
+./backup-text/x-ui.sh:243:        systemctl stop x-ui
+./backup-text/x-ui.sh:244:        systemctl disable x-ui
+./backup-text/x-ui.sh:245:        rm ${xui_service}/x-ui.service -f
+./backup-text/x-ui.sh:257:    rm /etc/x-ui/ -rf
+./backup-text/x-ui.sh:268:    echo -e "${green}bash <(curl -Ls https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/install.sh)${plain}"
+./backup-text/x-ui.sh:291:        ${xui_folder}/x-ui setting -username "${config_account}" -password "${config_password}" > /dev/null 2>&1
+./backup-text/x-ui.sh:293:        ${xui_folder}/x-ui setting -username "${config_account}" -password "${config_password}" -resetTwoFactor=true > /dev/null 2>&1
+./backup-text/x-ui.sh:299:    echo -e "${green} Please use the new login username and password to access the X-UI panel. Also remember them! ${plain}"
+./backup-text/x-ui.sh:322:    ${xui_folder}/x-ui setting -webBasePath "${config_webBasePath}" > /dev/null 2>&1
+./backup-text/x-ui.sh:337:    ${xui_folder}/x-ui setting -reset
+./backup-text/x-ui.sh:343:    local info=$(${xui_folder}/x-ui setting -show true)
+./backup-text/x-ui.sh:360:        echo -e "${green}Database: SQLite (/etc/x-ui/x-ui.db)${plain}"
+./backup-text/x-ui.sh:365:    local existing_cert=$(${xui_folder}/x-ui setting -getCert true | grep 'cert:' | awk -F': ' '{print $2}' | tr -d '[:space:]')
+./backup-text/x-ui.sh:449:        ${xui_folder}/x-ui setting -port ${port}
+./backup-text/x-ui.sh:471:            rc-service x-ui start
+./backup-text/x-ui.sh:473:            systemctl start x-ui
+./backup-text/x-ui.sh:478:            LOGI "x-ui Started Successfully"
+./backup-text/x-ui.sh:505:            rc-service x-ui stop
+./backup-text/x-ui.sh:507:            systemctl stop x-ui
+./backup-text/x-ui.sh:512:            LOGI "x-ui and xray stopped successfully"
+./backup-text/x-ui.sh:535:            LOGI "x-ui and xray Restarted successfully"
+./backup-text/x-ui.sh:545:        rc-service x-ui restart
+./backup-text/x-ui.sh:547:        systemctl restart x-ui
+./backup-text/x-ui.sh:552:        LOGI "x-ui and xray Restarted successfully"
+./backup-text/x-ui.sh:576:        rc-service x-ui reload
+./backup-text/x-ui.sh:578:        systemctl reload x-ui
+./backup-text/x-ui.sh:597:        rc-service x-ui status
+./backup-text/x-ui.sh:599:        systemctl status x-ui -l
+./backup-text/x-ui.sh:616:        rc-update add x-ui default
+./backup-text/x-ui.sh:618:        systemctl enable x-ui
+./backup-text/x-ui.sh:621:        LOGI "x-ui Set to boot automatically on startup successfully"
+./backup-text/x-ui.sh:623:        LOGE "x-ui Failed to set Autostart"
+./backup-text/x-ui.sh:641:        rc-update del x-ui
+./backup-text/x-ui.sh:643:        systemctl disable x-ui
+./backup-text/x-ui.sh:646:        LOGI "x-ui Autostart Cancelled successfully"
+./backup-text/x-ui.sh:648:        LOGE "x-ui Failed to cancel autostart"
+./backup-text/x-ui.sh:667:                grep -F 'x-ui[' /var/log/messages
+./backup-text/x-ui.sh:688:                journalctl -u x-ui -e --no-pager -f -p debug
+./backup-text/x-ui.sh:738:    if [ -f "/etc/sysctl.d/99-bbr-x-ui.conf" ]; then
+./backup-text/x-ui.sh:739:        old_settings=$(head -1 /etc/sysctl.d/99-bbr-x-ui.conf | tr -d '#')
+./backup-text/x-ui.sh:745:        rm /etc/sysctl.d/99-bbr-x-ui.conf
+./backup-text/x-ui.sh:774:        } > "/etc/sysctl.d/99-bbr-x-ui.conf"
+./backup-text/x-ui.sh:783:        sysctl -p /etc/sysctl.d/99-bbr-x-ui.conf
+./backup-text/x-ui.sh:801:    curl -fLRo /usr/bin/x-ui -z /usr/bin/x-ui https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/x-ui.sh
+./backup-text/x-ui.sh:807:        chmod +x /usr/bin/x-ui
+./backup-text/x-ui.sh:814:    ps -ef 2> /dev/null | grep -F "${xui_folder}/x-ui" | grep -v grep | awk 'NR==1 {print $1}'
+./backup-text/x-ui.sh:829:        if [[ ! -x "${xui_folder}/x-ui" ]]; then
+./backup-text/x-ui.sh:839:        if [[ ! -f /etc/init.d/x-ui ]]; then
+./backup-text/x-ui.sh:842:        if [[ $(rc-service x-ui status | grep -F 'status: started' -c) == 1 ]]; then
+./backup-text/x-ui.sh:848:        if [[ ! -f ${xui_service}/x-ui.service ]]; then
+./backup-text/x-ui.sh:851:        temp=$(systemctl status x-ui | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
+./backup-text/x-ui.sh:862:        if [[ $(rc-update show | grep -F 'x-ui' | grep default -c) == 1 ]]; then
+./backup-text/x-ui.sh:868:        temp=$(systemctl is-enabled x-ui)
+./backup-text/x-ui.sh:1332:                    local existing_cert=$(${xui_folder}/x-ui setting -getCert true | grep 'cert:' | awk -F': ' '{print $2}' | tr -d '[:space:]')
+./backup-text/x-ui.sh:1334:                        ${xui_folder}/x-ui cert -reset
+./backup-text/x-ui.sh:1381:            local panel_cert=$(${xui_folder}/x-ui setting -getCert true | grep 'cert:' | awk -F': ' '{print $2}' | tr -d '[:space:]')
+./backup-text/x-ui.sh:1400:                    ${xui_folder}/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
+./backup-text/x-ui.sh:1424:                        ${xui_folder}/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
+./backup-text/x-ui.sh:1435:                                --reloadcmd "x-ui restart" 2>&1 || true
+./backup-text/x-ui.sh:1471:    local existing_webBasePath=$(${xui_folder}/x-ui setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}')
+./backup-text/x-ui.sh:1472:    local existing_port=$(${xui_folder}/x-ui setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
+./backup-text/x-ui.sh:1600:    local reloadCmd="systemctl restart x-ui 2>/dev/null || rc-service x-ui restart 2>/dev/null"
+./backup-text/x-ui.sh:1657:            ${xui_folder}/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
+./backup-text/x-ui.sh:1677:    local existing_webBasePath=$(${xui_folder}/x-ui setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}')
+./backup-text/x-ui.sh:1678:    local existing_port=$(${xui_folder}/x-ui setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
+./backup-text/x-ui.sh:1805:    reloadCmd="x-ui restart"
+./backup-text/x-ui.sh:1807:    LOGI "Default --reloadcmd for ACME is: ${yellow}x-ui restart"
+./backup-text/x-ui.sh:1811:        echo -e "\n${green}\t1.${plain} Preset: systemctl reload nginx ; x-ui restart"
+./backup-text/x-ui.sh:1817:                LOGI "Reloadcmd is: systemctl reload nginx ; x-ui restart"
+./backup-text/x-ui.sh:1818:                reloadCmd="systemctl reload nginx ; x-ui restart"
+./backup-text/x-ui.sh:1821:                LOGD "It's recommended to put x-ui restart at the end, so it won't raise an error if other services fails"
+./backup-text/x-ui.sh:1822:                read -rp "Please enter your reloadcmd (example: systemctl reload nginx ; x-ui restart): " reloadCmd
+./backup-text/x-ui.sh:1876:            ${xui_folder}/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
+./backup-text/x-ui.sh:1891:    local existing_webBasePath=$(${xui_folder}/x-ui setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}')
+./backup-text/x-ui.sh:1892:    local existing_port=$(${xui_folder}/x-ui setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
+./backup-text/x-ui.sh:1970:        reloadCmd="x-ui restart"
+./backup-text/x-ui.sh:1972:        LOGI "Default --reloadcmd for ACME is: ${yellow}x-ui restart"
+./backup-text/x-ui.sh:1976:            echo -e "\n${green}\t1.${plain} Preset: systemctl reload nginx ; x-ui restart"
+./backup-text/x-ui.sh:1982:                    LOGI "Reloadcmd is: systemctl reload nginx ; x-ui restart"
+./backup-text/x-ui.sh:1983:                    reloadCmd="systemctl reload nginx ; x-ui restart"
+./backup-text/x-ui.sh:1986:                    LOGD "It's recommended to put x-ui restart at the end, so it won't raise an error if other services fails"
+./backup-text/x-ui.sh:1987:                    read -rp "Please enter your reloadcmd (example: systemctl reload nginx ; x-ui restart): " reloadCmd
+./backup-text/x-ui.sh:2025:                ${xui_folder}/x-ui cert -webCert "$webCertFile" -webCertKey "$webKeyFile"
+./backup-text/x-ui.sh:2120:    local existing_webBasePath=$(${xui_folder}/x-ui setting -show true | grep -Eo 'webBasePath: .+' | awk '{print $2}')
+./backup-text/x-ui.sh:2121:    local existing_port=$(${xui_folder}/x-ui setting -show true | grep -Eo 'port: .+' | awk '{print $2}')
+./backup-text/x-ui.sh:2122:    local existing_listenIP=$(${xui_folder}/x-ui setting -getListen true | grep -Eo 'listenIP: .+' | awk '{print $2}')
+./backup-text/x-ui.sh:2123:    local existing_cert=$(${xui_folder}/x-ui setting -getCert true | grep -Eo 'cert: .+' | awk '{print $2}')
+./backup-text/x-ui.sh:2124:    local existing_key=$(${xui_folder}/x-ui setting -getCert true | grep -Eo 'key: .+' | awk '{print $2}')
+./backup-text/x-ui.sh:2165:                ${xui_folder}/x-ui setting -listenIP "${config_listenIP}" > /dev/null 2>&1
+./backup-text/x-ui.sh:2181:            ${xui_folder}/x-ui setting -listenIP 0.0.0.0 > /dev/null 2>&1
+./backup-text/x-ui.sh:2535:    if [[ ! -x "${xui_folder}/x-ui" ]]; then
+./backup-text/x-ui.sh:2536:        LOGE "x-ui is not installed."
+./backup-text/x-ui.sh:2581:    if ! ${xui_folder}/x-ui migrate-db --dsn "$dsn"; then
+./backup-text/x-ui.sh:2659:# file using the bundled x-ui binary. With no arguments it dumps the installed
+./backup-text/x-ui.sh:2661:#   x-ui migrateDB [file.db|file.dump] [output]
+./backup-text/x-ui.sh:2664:    local default_db="/etc/x-ui/x-ui.db"
+./backup-text/x-ui.sh:2665:    local bin="${xui_folder}/x-ui"
+./backup-text/x-ui.sh:2670:        LOGE "x-ui binary not found at ${bin}. Is the panel installed?"
+./backup-text/x-ui.sh:2675:        LOGE "This x-ui build does not support .db <-> .dump conversion yet."
+./backup-text/x-ui.sh:2676:        LOGE "Update the panel first (x-ui update) to a version with 'migrate-db --dump/--restore'."
+./backup-text/x-ui.sh:2682:        echo -e "Usage: ${green}x-ui migrateDB [file.db|file.dump] [output]${plain}"
+./backup-text/x-ui.sh:2719:            LOGE "Refusing to restore into the live database (${default_db}) while x-ui is running."
+./backup-text/x-ui.sh:2720:            LOGE "Stop the panel first (x-ui stop) or choose a different output path."
+./backup-text/x-ui.sh:2742:    local default_db="/etc/x-ui/x-ui.db"
+./backup-text/x-ui.sh:2753:│  ${blue}x-ui control menu usages (subcommands):${plain}                       │
+./backup-text/x-ui.sh:2755:│  ${blue}x-ui${plain}                       - Admin Management Script          │
+./backup-text/x-ui.sh:2756:│  ${blue}x-ui start${plain}                 - Start                            │
+./backup-text/x-ui.sh:2757:│  ${blue}x-ui stop${plain}                  - Stop                             │
+./backup-text/x-ui.sh:2758:│  ${blue}x-ui restart${plain}               - Restart                          │
+./backup-text/x-ui.sh:2759:|  ${blue}x-ui restart-xray${plain}          - Restart Xray                     │
+./backup-text/x-ui.sh:2760:│  ${blue}x-ui status${plain}                - Current Status                   │
+./backup-text/x-ui.sh:2761:│  ${blue}x-ui settings${plain}              - Current Settings                 │
+./backup-text/x-ui.sh:2762:│  ${blue}x-ui enable${plain}                - Enable Autostart on OS Startup   │
+./backup-text/x-ui.sh:2763:│  ${blue}x-ui disable${plain}               - Disable Autostart on OS Startup  │
+./backup-text/x-ui.sh:2764:│  ${blue}x-ui log${plain}                   - Check logs                       │
+./backup-text/x-ui.sh:2765:│  ${blue}x-ui update${plain}                - Update                           │
+./backup-text/x-ui.sh:2766:│  ${blue}x-ui update-dev${plain}            - Update to Dev channel (latest)   │
+./backup-text/x-ui.sh:2767:│  ${blue}x-ui update-all-geofiles${plain}   - Update all geo files             │
+./backup-text/x-ui.sh:2768:│  ${blue}x-ui migrateDB [file]${plain}      - Convert .db <-> .dump (SQLite)   │
+./backup-text/x-ui.sh:2769:│  ${blue}x-ui legacy${plain}                - Legacy version disabled disabled                   │
+./backup-text/x-ui.sh:2770:│  ${blue}x-ui install${plain}               - Install                          │
+./backup-text/x-ui.sh:2771:│  ${blue}x-ui uninstall${plain}             - Uninstall                        │
+./backup-text/x-ui.sh:2778:│  ${green}Heimdall Panel Management Script${plain}             │
+./backup-text/y-ui.sh:11:### HEIMDALL UI HELPERS ###
+./backup-text/y-ui.sh:73:### END HEIMDALL UI HELPERS ###
+./backup-text/y-ui.sh:114:        xui_env_file="/etc/default/x-ui"
+./backup-text/y-ui.sh:117:        xui_env_file="/etc/conf.d/x-ui"
+./backup-text/y-ui.sh:120:        xui_env_file="/etc/sysconfig/x-ui"
+./backup-text/y-ui.sh:256:    install -d -m 755 /etc/systemd/system/x-ui.service.d
+./backup-text/y-ui.sh:258:    cat > /etc/systemd/system/x-ui.service.d/10-y-ui-env.conf <<ENVEOF
+./backup-text/y-ui.sh:268:        if rc-service x-ui restart; then
+./backup-text/y-ui.sh:269:            info "x-ui restarted successfully."
+./backup-text/y-ui.sh:273:        error "Failed to restart x-ui."
+./backup-text/y-ui.sh:280:        if systemctl restart x-ui; then
+./backup-text/y-ui.sh:281:            info "x-ui restarted successfully."
+./backup-text/y-ui.sh:285:        error "Failed to restart x-ui."
+./backup-text/y-ui.sh:287:        journalctl -u x-ui -n 30 --no-pager
+./backup-text/x-ui.rc:3:command="/usr/local/x-ui/x-ui"
+./backup-text/x-ui.rc:5:pidfile="/run/x-ui.pid"
+./backup-text/x-ui.rc:6:description="x-ui Service"
+./backup-text/x-ui.rc:7:procname="x-ui"
+./backup-text/x-ui.rc:12:    cd /usr/local/x-ui
+./backup-text/x-ui.service.arch:2:Description=x-ui Service
+./backup-text/x-ui.service.arch:7:EnvironmentFile=-/etc/conf.d/x-ui
+./backup-text/x-ui.service.arch:10:WorkingDirectory=/usr/local/x-ui/
+./backup-text/x-ui.service.arch:11:ExecStart=/usr/local/x-ui/x-ui
+./backup-text/x-ui.service.debian:2:Description=x-ui Service
+./backup-text/x-ui.service.debian:7:EnvironmentFile=-/etc/default/x-ui
+./backup-text/x-ui.service.debian:10:WorkingDirectory=/usr/local/x-ui/
+./backup-text/x-ui.service.debian:11:ExecStart=/usr/local/x-ui/x-ui
+./backup-text/x-ui.service.rhel:2:Description=x-ui Service
+./backup-text/x-ui.service.rhel:7:EnvironmentFile=-/etc/sysconfig/x-ui
+./backup-text/x-ui.service.rhel:10:WorkingDirectory=/usr/local/x-ui/
+./backup-text/x-ui.service.rhel:11:ExecStart=/usr/local/x-ui/x-ui
+./backup-text/y-ui-migration-center.py:21:# === HEIMDALL UI HELPERS ===
+./backup-text/y-ui-migration-center.py:57:# === END HEIMDALL UI HELPERS ===
+./backup-text/y-ui-migration-center.py:60:HEIMDALL_DB = os.environ.get("HEIMDALL_DB", "xui")
+./backup-text/y-ui-migration-center.py:112:def run_heimdall_psql(sql):
+./backup-text/y-ui-migration-center.py:113:    cmd = ["sudo", "-u", PSQL_USER, "psql", "-d", HEIMDALL_DB, "-v", "ON_ERROR_STOP=1", "-Atc", sql]
+./backup-text/y-ui-migration-center.py:117:def run_heimdall_psql_script(sql):
+./backup-text/y-ui-migration-center.py:118:    cmd = ["sudo", "-u", PSQL_USER, "psql", "-d", HEIMDALL_DB, "-v", "ON_ERROR_STOP=1"]
+./backup-text/y-ui-migration-center.py:793:        # client name is user.name, so map user.name -> Heimdall email/name.
+./backup-text/y-ui-migration-center.py:882:def validate_heimdall_tables():
+./backup-text/y-ui-migration-center.py:884:    out = run_heimdall_psql("""
+./backup-text/y-ui-migration-center.py:894:        die(f"missing Heimdall tables: {missing}")
+./backup-text/y-ui-migration-center.py:896:def fetch_heimdall_inbounds():
+./backup-text/y-ui-migration-center.py:897:    out = run_heimdall_psql("""
+./backup-text/y-ui-migration-center.py:927:    all_rows = fetch_heimdall_inbounds()
+./backup-text/y-ui-migration-center.py:931:        die(f"target inbound ids not found in Heimdall: {missing}")
+./backup-text/y-ui-migration-center.py:1032:            warnings.append(f"{r.get('_source_label') or 'Source'} data_limit_reset_strategy={r.get('data_limit_reset_strategy')} not mapped; Heimdall reset=0")
+./backup-text/y-ui-migration-center.py:1087:            "heimdall": {
+./backup-text/y-ui-migration-center.py:1108:                "owner_policy": "owner_admin_id=NULL then x-ui restart/fallback assigns Owner",
+./backup-text/y-ui-migration-center.py:1134:    out = run_heimdall_psql(sql).strip()
+./backup-text/y-ui-migration-center.py:1273:def backup_heimdall_db():
+./backup-text/y-ui-migration-center.py:1275:    bkdir = Path(f"/root/heimdall-backup-before-yui-migration-{ts}")
+./backup-text/y-ui-migration-center.py:1280:        res = subprocess.run(["sudo", "-u", PSQL_USER, "pg_dump", "-Fc", "-d", HEIMDALL_DB], stdout=f, stderr=subprocess.PIPE, cwd="/tmp")
+./backup-text/y-ui-migration-center.py:1291:    run_cmd(["systemctl", "restart", "x-ui"])
+./backup-text/y-ui-migration-center.py:1293:    out, _ = run_cmd(["systemctl", "is-active", "x-ui"])
+./backup-text/y-ui-migration-center.py:1295:        die("x-ui did not become active after restart")
+./backup-text/y-ui-migration-center.py:1316:    return run_heimdall_psql(sql)
+./backup-text/y-ui-migration-center.py:1319:    rows = fetch_heimdall_inbounds()
+./backup-text/y-ui-migration-center.py:1321:    print("Heimdall existing inbounds:")
+./backup-text/y-ui-migration-center.py:1539:    print("HEIMDALL")
+./backup-text/y-ui-migration-center.py:1542:    inbounds = fetch_heimdall_inbounds()
+./backup-text/y-ui-migration-center.py:1564:    print("└─ Heimdall inbound selection")
+./backup-text/y-ui-migration-center.py:1594:    raw_inbounds = prompt("", "Target Heimdall inbound IDs")
+./backup-text/y-ui-migration-center.py:1624:    print("REASON: duplicate clients already exist in Heimdall")
+./backup-text/y-ui-migration-center.py:1715:        validate_heimdall_tables()
+./backup-text/y-ui-migration-center.py:1791:            confirm = input("Type YES to backup Heimdall DB and run real import: ").strip()
+./backup-text/y-ui-migration-center.py:1799:        bkdir = backup_heimdall_db()
+./backup-text/y-ui-migration-center.py:1804:        stdout, stderr = run_heimdall_psql_script(sql_text)

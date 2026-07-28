@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "releaseSeconds": 60,
+  "clients": {
+    "hmstat_3_3af6ypxqi3uvukk7": 5,
+    "hmstat_3_iungo5i2jmyrqq54": 1,
+    "hmstat_3_ujf2x77flndnuza5": 1,
+    "hmstat_3_xim5tycjfhmpvpg2": 2
+  }
+}

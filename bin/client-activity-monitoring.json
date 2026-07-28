@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "clients": {
+    "hmstat_3_3af6ypxqi3uvukk7": {
+      "clientId": 23,
+      "generation": 1,
+      "dataEpoch": 1
+    },
+    "hmstat_3_4ou6mxbz57yamooe": {
+      "clientId": 24,
+      "generation": 1,
+      "dataEpoch": 1
+    },
+    "hmstat_3_iungo5i2jmyrqq54": {
+      "clientId": 28,
+      "generation": 1,
+      "dataEpoch": 1
+    },
+    "hmstat_3_l62smxxbmx55grcr": {
+      "clientId": 14,
+      "generation": 1,
+      "dataEpoch": 1
+    },
+    "hmstat_3_tojqei6pknd4li3d": {
+      "clientId": 21,
+      "generation": 1,
+      "dataEpoch": 1
+    },
+    "hmstat_3_ujf2x77flndnuza5": {
+      "clientId": 29,
+      "generation": 1,
+      "dataEpoch": 1
+    }
+  }
+}
