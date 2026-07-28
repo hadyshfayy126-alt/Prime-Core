@@ -62,6 +62,23 @@ echo ""
 echo "Status:"
 systemctl status prime-core --no-pager
 
+echo "[+] Generating login credentials..."
+
+USERNAME=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 10)
+PASSWORD=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 16)
+
+/usr/local/bin/prime-core setting \
+-username "$USERNAME" \
+-password "$PASSWORD"
+
+echo ""
+echo "================================="
+echo " Prime-Core Login Information"
+echo "================================="
+echo "Username: $USERNAME"
+echo "Password: $PASSWORD"
+echo "================================="
+
 echo ""
 echo "Show settings:"
 echo "/usr/local/bin/prime-core setting -show"
