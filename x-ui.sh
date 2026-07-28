@@ -129,7 +129,8 @@ before_show_menu() {
 }
 
 install() {
-    bash <(curl -Ls https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/install.sh)
+    chmod +x /usr/local/prime-core/x-ui.sh
+    /usr/local/prime-core/x-ui.sh install
     if [[ $? == 0 ]]; then
         if [[ $# == 0 ]]; then
             start
@@ -138,6 +139,7 @@ install() {
         fi
     fi
 }
+
 
 update() {
     confirm "This function will update all x-ui components to the latest version, and the data will not be lost. Do you want to continue?" "y"
