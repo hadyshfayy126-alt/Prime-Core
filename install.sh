@@ -18,4 +18,4 @@ cd Prime-Core
 
 chmod +x x-ui.sh
 
-bash x-ui.sh
+echo "1" | bash x-ui.sh
