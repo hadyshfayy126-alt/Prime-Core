@@ -90,10 +90,10 @@ fi
 if [[ "${running_in_docker}" == "true" ]]; then
     xui_folder="${XUI_MAIN_FOLDER:=/app}"
 else
-    xui_folder="${XUI_MAIN_FOLDER:=/usr/local/x-ui}"
+    xui_folder="${XUI_MAIN_FOLDER:=/usr/local/prime-core}"
 fi
 xui_service="${XUI_SERVICE:=/etc/systemd/system}"
-log_folder="${XUI_LOG_FOLDER:=/var/log/x-ui}"
+log_folder="${XUI_LOG_FOLDER:=/var/log/prime-core}"
 mkdir -p "${log_folder}"
 iplimit_log_path="${log_folder}/3xipl.log"
 iplimit_banned_log_path="${log_folder}/3xipl-banned.log"
@@ -150,7 +150,7 @@ update() {
         fi
         return 0
     fi
-    bash <(curl -Ls https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/update.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/hadyshfayy126-alt/Prime-Core/main/update.sh)
     if [[ $? == 0 ]]; then
         LOGI "Update is complete, Panel has automatically restarted "
         before_show_menu
@@ -168,7 +168,7 @@ update_dev() {
     fi
     # XUI_UPDATE_TAG tells update.sh to install the dev-latest pre-release
     # instead of the latest stable tag.
-    XUI_UPDATE_TAG="dev-latest" bash <(curl -Ls https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/update.sh)
+    XUI_UPDATE_TAG="dev-latest"bash <(curl -Ls https://raw.githubusercontent.com/hadyshfayy126-alt/Prime-Core/main/update.sh)
     if [[ $? == 0 ]]; then
         LOGI "Dev update is complete, Panel has automatically restarted "
         before_show_menu
@@ -186,9 +186,9 @@ update_menu() {
         return 0
     fi
 
-    curl -fLRo /usr/bin/x-ui https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/x-ui.sh
+curl -fLRo /usr/local/prime-core/x-ui https://raw.githubusercontent.com/hadyshfayy126-alt/Prime-Core/main/x-ui.sh
     chmod +x ${xui_folder}/x-ui.sh
-    chmod +x /usr/bin/x-ui
+    chmod +x /usr/local/bin/prime-core
 
     if [[ $? == 0 ]]; then
         echo -e "${green}Update successful. The panel has automatically restarted.${plain}"
@@ -244,7 +244,7 @@ uninstall() {
     else
         systemctl stop x-ui
         systemctl disable x-ui
-        rm ${xui_service}/x-ui.service -f
+        rm ${xui_service}/prime-core.service -f
         systemctl daemon-reload
         systemctl reset-failed
     fi
@@ -267,7 +267,7 @@ uninstall() {
     echo ""
     echo -e "Uninstalled Successfully.\n"
     echo "If you need to install this panel again, you can use below command:"
-    echo -e "${green}bash <(curl -Ls https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/install.sh)${plain}"
+echo -e "${green}bash <(curl -Ls https://raw.githubusercontent.com/hadyshfayy126-alt/Prime-Core/main/install.sh)${plain}"
     echo ""
     # Trap the SIGTERM signal
     trap delete_script SIGTERM
@@ -800,13 +800,13 @@ enable_bbr() {
 }
 
 update_shell() {
-    curl -fLRo /usr/bin/x-ui -z /usr/bin/x-ui https://raw.githubusercontent.com/sh7CBAC/Heimdall/main/x-ui.sh
+    curl -fLRo /usr/local/bin/prime-core -z /usr/local/bin/prime-core https://raw.githubusercontent.com/hadyshfayy126-alt/Prime-Core/main/x-ui.sh
     if [[ $? != 0 ]]; then
         echo ""
         LOGE "Failed to download script, Please check whether the machine can connect Github"
         before_show_menu
     else
-        chmod +x /usr/bin/x-ui
+        chmod +x /usr/local/bin/prime-core
         LOGI "Upgrade script succeeded, Please rerun the script"
         before_show_menu
     fi
@@ -847,7 +847,7 @@ check_status() {
             return 1
         fi
     else
-        if [[ ! -f ${xui_service}/x-ui.service ]]; then
+        if [[ ! -f ${xui_service}/prime-core.service ]]; then
             return 2
         fi
         temp=$(systemctl status x-ui | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
